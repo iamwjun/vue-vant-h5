@@ -1,0 +1,33 @@
+{
+  "name": "vue-vant-h5",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --mode development",
+    "dev:prod": "vite --mode production",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.app.json",
+    "build": "npm run build:prod",
+    "build:dev": "npm run typecheck && vite build --mode development",
+    "build:prod": "npm run typecheck && vite build --mode production",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.16.1",
+    "tailwindcss": "^4.3.0",
+    "vant": "^4.9.24",
+    "vue": "^3.5.34",
+    "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.0",
+    "@types/mockjs": "^1.0.10",
+    "@types/node": "^24.12.3",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "@vue/tsconfig": "^0.9.1",
+    "mockjs": "^1.1.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.0.12",
+    "vite-plugin-mock": "^3.0.2",
+    "vue-tsc": "^3.2.8"
+  }
+}

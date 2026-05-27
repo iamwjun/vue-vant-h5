@@ -1,0 +1,16 @@
+@theme {
+  --color-brand-50: #f0f4ff;
+  --color-brand-100: #d6e4ff;
+  --color-brand-500: #4477ff;
+  --color-brand-600: #2f66f0;
+  --color-brand-700: #1f53da;
+  --color-surface-muted: #f5f6f8;
+  --color-text-base: #1a1a1a;
+  --color-text-body: #333333;
+  --color-text-secondary: #666666;
+  --color-text-muted: #999999;
+  --color-border-soft: #ebebeb;
+  --color-border-subtle: #f0f0f0;
+  --radius-field: 8px;
+  --radius-panel: 16px;
+}

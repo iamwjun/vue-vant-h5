@@ -1,0 +1,69 @@
+@utility van-nav-shell {
+  --van-nav-bar-background: transparent;
+  --van-nav-bar-icon-color: #000;
+  --van-nav-bar-text-color: #000;
+  --van-nav-bar-title-text-color: #000;
+  background: transparent;
+
+}
+
+@utility van-search-shell {
+  --van-search-padding: 0;
+  --van-search-background: transparent;
+  --van-search-content-background: var(--color-surface-muted);
+  --van-search-left-icon-color: #bbbbbb;
+  --van-field-placeholder-text-color: #bbbbbb;
+  --van-field-input-text-color: var(--color-text-body);
+  --van-search-input-height: 36px;
+
+  & .van-search__content {
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-field);
+  }
+
+  & .van-field__control {
+    font-size: 14px;
+  }
+}
+
+@utility van-switch-brand {
+  --van-switch-on-background: var(--color-brand-500);
+  --van-switch-node-background: #ffffff;
+}
+
+@utility van-list-muted {
+  & .van-list__finished-text,
+  & .van-list__loading {
+    color: var(--color-text-muted);
+    font-size: 13px;
+    line-height: 20px;
+  }
+}
+
+@utility van-dropdown-brand {
+  position: relative;
+  z-index: 100;
+  --van-dropdown-menu-z-index: 100;
+  --van-dropdown-menu-background: #ffffff;
+  --van-dropdown-menu-title-font-size: 14px;
+  --van-dropdown-menu-title-text-color: var(--color-text-body);
+  --van-dropdown-menu-title-active-text-color: var(--color-brand-500);
+  --van-primary-color: var(--color-brand-500);
+
+  & .van-dropdown-menu__bar {
+    box-shadow: none;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+}
+
+@utility van-popup-surface {
+  background: #ffffff;
+}
+
+@utility van-button-brand-lg {
+  --van-button-default-height: 56px;
+  --van-button-normal-font-size: 16px;
+  --van-button-radius: 12px;
+  --van-button-border-width: 0;
+  font-weight: 700;
+}
