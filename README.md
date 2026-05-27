@@ -1,10 +1,10 @@
 # vue-vant-h5
 
-Vue 3 + TypeScript + Vite 的移动端 H5 项目，使用 Vant 4 构建交互组件，Tailwind CSS v4 管理基础样式能力，Axios 统一请求，`vite-plugin-mock` + Mock.js 提供本地 mock。
+A mobile H5 project built with Vue 3, TypeScript, and Vite. It uses Vant 4 for interactive components, Tailwind CSS v4 for foundational styling, Axios for centralized requests, and `vite-plugin-mock` with Mock.js for local mocks.
 
-当前业务页面包括充值、帐单列表、帐单详情。`/` 默认跳转到充值页。
+The current business pages include recharge, bill list, and bill detail. `/` redirects to the recharge page by default.
 
-## 技术栈
+## Tech Stack
 
 - Vue 3
 - TypeScript
@@ -16,21 +16,21 @@ Vue 3 + TypeScript + Vite 的移动端 H5 项目，使用 Vant 4 构建交互组
 - Mock.js
 - vite-plugin-mock
 
-## 本地开发
+## Local Development
 
-安装依赖：
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-启动开发服务：
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-开发模式默认读取 `.env.development`：
+Development mode reads `.env.development` by default:
 
 ```env
 VITE_APP_TITLE=Recharge example
@@ -38,13 +38,13 @@ VITE_API_BASE_URL=/api
 VITE_ENABLE_MOCK=true
 ```
 
-开发服务启动后访问：
+After the development server starts, visit:
 
 ```text
 http://127.0.0.1:5173/recharge
 ```
 
-## 常用命令
+## Common Commands
 
 ```bash
 npm run dev
@@ -56,37 +56,37 @@ npm run build:prod
 npm run preview
 ```
 
-命令说明：
+Command descriptions:
 
-- `npm run dev`：使用 development mode 启动 Vite，本地 mock 生效。
-- `npm run dev:prod`：使用 production mode 启动 Vite。
-- `npm run typecheck`：执行 `vue-tsc --noEmit`。
-- `npm run build`：执行生产构建，等同于 `npm run build:prod`。
-- `npm run preview`：预览最近一次 `dist/` 构建结果。
+- `npm run dev`: Start Vite in development mode with local mocks enabled.
+- `npm run dev:prod`: Start Vite in production mode.
+- `npm run typecheck`: Run `vue-tsc --noEmit`.
+- `npm run build`: Run the production build, equivalent to `npm run build:prod`.
+- `npm run preview`: Preview the latest `dist/` build output.
 
-## 目录结构
+## Directory Structure
 
 ```text
 .
-├── mock/                  # 本地 mock 接口和 mock 数据
-├── public/                # 直接由浏览器访问的静态资源
+├── mock/                  # Local mock endpoints and mock data
+├── public/                # Static assets served directly by the browser
 ├── src/
-│   ├── api/               # Axios 接口封装
-│   ├── app/               # 应用根组件
-│   ├── assets/            # 由源码导入的资源
-│   ├── components/        # 可复用组件
-│   ├── config/            # 环境变量和运行时配置
-│   ├── layouts/           # 页面布局
-│   ├── router/            # 路由配置
-│   ├── services/          # 业务服务编排
-│   ├── styles/            # 全局样式、Tailwind token、Vant 覆盖
-│   ├── types/             # 共享类型
-│   ├── utils/             # 通用工具函数
-│   └── views/             # 页面
+│   ├── api/               # Axios API wrappers
+│   ├── app/               # Application root component
+│   ├── assets/            # Assets imported by source code
+│   ├── components/        # Reusable components
+│   ├── config/            # Environment variables and runtime configuration
+│   ├── layouts/           # Page layouts
+│   ├── router/            # Route configuration
+│   ├── services/          # Business service orchestration
+│   ├── styles/            # Global styles, Tailwind tokens, and Vant overrides
+│   ├── types/             # Shared types
+│   ├── utils/             # General utility functions
+│   └── views/             # Pages
 └── vite.config.ts
 ```
 
-页面目录：
+Page directories:
 
 ```text
 src/views/recharge/RechargeView.vue
@@ -94,50 +94,50 @@ src/views/bills/BillsView.vue
 src/views/bills/BillDetailView.vue
 ```
 
-## 路由
+## Routing
 
-路由集中在 `src/router/index.ts`。
+Routes are centralized in `src/router/index.ts`.
 
 | Path | Name | Page |
 | --- | --- | --- |
 | `/` | - | redirect to `recharge-center` |
-| `/recharge` | `recharge-center` | 充值 |
-| `/bills` | `bills` | 帐单列表 |
-| `/bills/:id` | `bill-detail` | 帐单详情 |
+| `/recharge` | `recharge-center` | Recharge |
+| `/bills` | `bills` | Bill list |
+| `/bills/:id` | `bill-detail` | Bill detail |
 
-页面标题通过 `router.afterEach` 根据 `route.meta.title` 和 `VITE_APP_TITLE` 自动设置。
+Page titles are set automatically in `router.afterEach` based on `route.meta.title` and `VITE_APP_TITLE`.
 
-## API 开发约定
+## API Development Conventions
 
-请求基础能力在 `src/api/http.ts`：
+The core request utilities live in `src/api/http.ts`:
 
-- 自动读取 `VITE_API_BASE_URL`
-- 自动附加本地 `access_token`
-- 统一处理 `{ code, data, message }` 响应结构
-- 统一处理错误 toast
+- Automatically reads `VITE_API_BASE_URL`
+- Automatically attaches the local `access_token`
+- Handles the `{ code, data, message }` response structure consistently
+- Handles error toasts consistently
 
-业务接口按领域放在 `src/api/` 中。例如钱包接口：
+Business APIs are organized by domain under `src/api/`. For example, wallet APIs:
 
 ```ts
 fetchWalletBalanceApi(tenantId)
 submitWalletRechargeApi(params)
 ```
 
-注意：API 封装中不要写 `/api` 前缀。开发环境 `VITE_API_BASE_URL=/api` 会自动补齐。例如：
+Note: Do not include the `/api` prefix in API wrappers. In development, `VITE_API_BASE_URL=/api` adds it automatically. For example:
 
 ```ts
 post('/capital/wallet/recharge', params)
 ```
 
-对应 mock 地址需要包含 `/api`：
+The corresponding mock URL must include `/api`:
 
 ```ts
 url: '/api/capital/wallet/recharge'
 ```
 
-## Mock 开发
+## Mock Development
 
-本地 mock 由 `vite-plugin-mock` 加载，配置在 `vite.config.ts`：
+Local mocks are loaded by `vite-plugin-mock` and configured in `vite.config.ts`:
 
 ```ts
 viteMockServe({
@@ -147,17 +147,17 @@ viteMockServe({
 })
 ```
 
-当前 mock 内容：
+Current mock content:
 
 - `mock/index.ts`
   - `GET /api/capital/wallet/:tenantId/balance`
   - `POST /api/capital/wallet/recharge`
-  - 用户登录/用户信息示例接口
+  - Sample user login and user information endpoints
 - `mock/list.ts`
-  - `bills`：最近 3 个月，每月 36 条，共 108 条帐单数据
-  - 同时提供平铺 `list` 和按月聚合 `groups`
+  - `bills`: bill data for the last 3 months, 36 records per month, 108 records in total
+  - Provides both flat `list` data and monthly aggregated `groups`
 
-Mock 响应建议保持统一格式：
+Mock responses should keep a consistent format:
 
 ```ts
 {
@@ -167,72 +167,72 @@ Mock 响应建议保持统一格式：
 }
 ```
 
-## 充值页面说明
+## Recharge Page
 
-充值页位于 `src/views/recharge/RechargeView.vue`，包含：
+The recharge page is located at `src/views/recharge/RechargeView.vue` and includes:
 
 - Vant `NavBar`
-- 余额查询
-- 跳转帐单列表入口
-- 固定金额选择，默认从 `50` 开始
-- Vant `NumberKeyboard` 金额输入
-- mock 充值成功提示
+- Balance lookup
+- Entry point to the bill list
+- Fixed amount selection, starting from `50` by default
+- Vant `NumberKeyboard` amount input
+- Mock recharge success toast
 
-充值成功后会用接口返回的余额更新页面展示。
+After a successful recharge, the page display is updated with the balance returned by the API.
 
-## 类型约定
+## Type Conventions
 
-共享类型放在 `src/types/` 并通过 `src/types/index.ts` 统一导出。
+Shared types live in `src/types/` and are exported through `src/types/index.ts`.
 
-新增接口时建议同步增加：
+When adding a new API, also add:
 
-1. 请求参数类型
-2. 响应数据类型
-3. API 函数泛型约束
-4. mock 响应字段
+1. Request parameter types
+2. Response data types
+3. Generic constraints for API functions
+4. Mock response fields
 
-## 样式约定
+## Style Conventions
 
-- 全局入口：`src/styles/index.css`
-- Tailwind token：`src/styles/tailwind/theme.css`
-- 基础样式：`src/styles/tailwind/base.css`
-- Vant 覆盖工具类：`src/styles/utilities/vant.css`
-- 通用工具类：`src/styles/utilities/common.css`
+- Global entry: `src/styles/index.css`
+- Tailwind tokens: `src/styles/tailwind/theme.css`
+- Base styles: `src/styles/tailwind/base.css`
+- Vant override utilities: `src/styles/utilities/vant.css`
+- Common utilities: `src/styles/utilities/common.css`
 
-页面开发优先使用当前项目已有 token 和组件风格。移动端页面需要重点检查窄屏宽度下的文字换行、按钮尺寸和固定区域遮挡。
+When developing pages, prefer the tokens and component style already used in this project. For mobile pages, pay special attention to text wrapping, button sizes, and fixed-area overlap at narrow widths.
 
-## 验证流程
+## Verification Flow
 
-提交前至少执行：
+Before submitting, run at least:
 
 ```bash
 npm run typecheck
 npm run build
 ```
 
-涉及 UI 或路由时，再执行：
+For UI or routing changes, also run:
 
 ```bash
 npm run dev
 ```
 
-并手动验证关键路径，例如：
+Then manually verify key paths, such as:
 
 - `/recharge`
 - `/bills`
 - `/bills/:id`
 
-涉及 mock 接口时，可以在开发服务启动后直接请求：
+For mock endpoint changes, you can request the endpoint directly after the development server starts:
 
 ```bash
 curl http://127.0.0.1:5173/api/capital/wallet/demo-tenant/balance
 ```
 
-## 提交规范
+## Commit Convention
 
-使用英文 Conventional Commits，并保持单个提交聚焦。
+Use English Conventional Commits and keep each commit focused.
 
-示例：
+Examples:
 
 ```text
 feat(recharge): implement wallet top-up workflow
@@ -240,11 +240,11 @@ feat(billing): add bill views and grouped mock data
 chore(project): bootstrap Vue Vant H5 application
 ```
 
-非平凡提交建议添加 body，说明行为变化、影响范围和验证结果。
+For non-trivial commits, add a body that explains the behavior changes, affected areas, and verification results.
 
-## 配置和安全
+## Configuration And Security
 
-- 不提交 `.env`。
-- 浏览器可见变量必须以 `VITE_` 开头。
-- 环境变量读取集中在 `src/config/env.ts`。
-- 真实接口地址、密钥、令牌不要写入源码或 mock 数据。
+- Do not commit `.env`.
+- Browser-visible variables must start with `VITE_`.
+- Environment variable access is centralized in `src/config/env.ts`.
+- Do not write real API URLs, secrets, or tokens into source code or mock data.
