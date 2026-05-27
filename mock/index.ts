@@ -1,5 +1,6 @@
 import type { MockMethod } from "vite-plugin-mock";
 import Mock from "mockjs";
+import { bills } from "./list";
 
 let walletBalance = 2688.5;
 
@@ -96,12 +97,22 @@ export default [
     },
   },
   {
-    url: "/order/list",
+    url: "/api/capital/wallet/bills",
     method: "post",
-    timeout: 1000,
-    response: ({ body }: { body: { pageSize: string; pageNo: string } }) => {
-      const pageSize = Number(body.pageSize || 10);
-      const pageNo = Number(body.pageNo || 1);
+    timeout: 500,
+    response: ({ body }: { body: { pageSize?: number | string; pageNo?: number | string } }) => {
+      const requestedPageSize = Number(body.pageSize || 10);
+      const requestedPageNo = Number(body.pageNo || 1);
+      const pageSize =
+        Number.isFinite(requestedPageSize) && requestedPageSize > 0
+          ? requestedPageSize
+          : 10;
+      const pageNo =
+        Number.isFinite(requestedPageNo) && requestedPageNo > 0
+          ? requestedPageNo
+          : 1;
+      const start = (pageNo - 1) * pageSize;
+      const end = start + pageSize;
 
       return {
         code: 200,
@@ -109,8 +120,8 @@ export default [
         data: {
           pageSize,
           pageNo,
-          total: 0,
-          list: [],
+          total: bills.total,
+          list: bills.list.slice(start, end),
         },
       };
     },
