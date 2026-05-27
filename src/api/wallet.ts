@@ -1,6 +1,7 @@
 import { get, post } from '@/api/http'
 import type {
   WalletBalance,
+  WalletBillDetail,
   WalletBillListParams,
   WalletBillListResult,
   WalletRechargeParams,
@@ -17,4 +18,8 @@ export function submitWalletRechargeApi(params: WalletRechargeParams) {
 
 export function fetchWalletBillsApi(params: WalletBillListParams) {
   return post<WalletBillListResult, WalletBillListParams>('/capital/wallet/bills', params)
+}
+
+export function fetchWalletBillDetailApi(id: string) {
+  return get<WalletBillDetail>(`/capital/wallet/bills/${id}`)
 }

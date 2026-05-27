@@ -55,3 +55,5 @@ export interface WalletBillListResult {
   total: number
   list: WalletBill[]
 }
+
+export type WalletBillDetail = WalletBill

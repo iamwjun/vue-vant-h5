@@ -126,4 +126,26 @@ export default [
       };
     },
   },
+  {
+    url: "/api/capital/wallet/bills/:id",
+    method: "get",
+    timeout: 300,
+    response: ({ query }: { query: { id: string } }) => {
+      const detail = bills.list.find((item) => item.id === query.id);
+
+      if (!detail) {
+        return {
+          code: 404,
+          message: "帐单不存在",
+          data: null,
+        };
+      }
+
+      return {
+        code: 200,
+        message: "ok",
+        data: detail,
+      };
+    },
+  },
 ] as MockMethod[];
