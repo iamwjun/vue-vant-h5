@@ -9,7 +9,32 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: AppShell,
     redirect: { name: 'recharge-center' },
-    children: [],
+    children: [
+      {
+        path: 'recharge',
+        name: 'recharge-center',
+        component: () => import('@/views/recharge/RechargeView.vue'),
+        meta: {
+          title: '充值',
+        },
+      },
+      {
+        path: 'bills',
+        name: 'bills',
+        component: () => import('@/views/bills/BillsView.vue'),
+        meta: {
+          title: '帐单',
+        },
+      },
+      {
+        path: 'bills/:id',
+        name: 'bill-detail',
+        component: () => import('@/views/bills/BillDetailView.vue'),
+        meta: {
+          title: '帐单详情',
+        },
+      },
+    ],
   },
 ]
 
