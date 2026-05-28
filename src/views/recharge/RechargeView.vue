@@ -123,291 +123,74 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="recharge-page">
-    <VanNavBar title="充值" fixed placeholder safe-area-inset-top class="recharge-navbar" />
+  <section class="recharge-page-surface min-h-screen text-[#17201c]">
+    <VanNavBar title="充值" fixed placeholder safe-area-inset-top
+      class="border-b border-[rgba(27,107,82,0.08)] backdrop-blur-[18px] [--van-nav-bar-background:rgba(255,255,255,0.86)] [--van-nav-bar-title-font-size:17px] [--van-nav-bar-title-text-color:#17201c]" />
 
-    <main class="recharge-content">
-      <section class="balance-panel" aria-label="账户余额">
-        <div class="balance-panel__top">
-          <span class="balance-panel__label">账户余额</span>
-          <button class="balance-panel__refresh" type="button" :disabled="balanceLoading" @click="loadBalance">
+    <main class="mx-auto w-[min(100%,520px)] px-4 pt-4.5 pb-6 max-[360px]:px-3">
+      <section
+        class="recharge-balance-surface relative overflow-hidden rounded-[18px] border border-[rgba(27,107,82,0.16)] p-[18px] text-white shadow-[0_18px_44px_rgba(24,72,55,0.18)] after:absolute after:right-[-58px] after:bottom-[-72px] after:h-[180px] after:w-[180px] after:rounded-full after:border after:border-[rgba(255,255,255,0.26)] after:content-['']"
+        aria-label="账户余额">
+        <div class="relative z-[1] flex items-center justify-between gap-3">
+          <span class="text-[13px] leading-5 text-white/78">账户余额</span>
+          <button
+            class="inline-grid h-[30px] min-w-[72px] place-items-center rounded-full border-0 bg-white/[0.38] text-xs font-bold text-[#1b6b52] disabled:opacity-[0.72] px-[8px]"
+            type="button" :disabled="balanceLoading" @click="loadBalance">
             <VanLoading v-if="balanceLoading" size="14px" color="#1b6b52" />
             <span v-else>查询余额</span>
           </button>
         </div>
 
-        <p class="balance-panel__amount">¥{{ balanceText }}</p>
+        <p
+          class="relative z-[1] mt-[18px] mb-[22px] [font-family:MiSans,'DIN_Alternate','Arial_Narrow',sans-serif] text-[clamp(38px,13vw,56px)] leading-none font-extrabold">
+          ¥{{ balanceText }}
+        </p>
 
-        <div class="balance-panel__bottom">
+        <div class="relative z-[1] flex items-center justify-between gap-3 text-[13px] leading-5 text-white/[0.78]">
           <span>可用余额 ¥{{ formatCurrency(balance?.availableBalance ?? 0) }}</span>
-          <RouterLink class="balance-panel__link" :to="{ name: 'bills' }">查看帐单</RouterLink>
+          <RouterLink class="shrink-0 border-b border-white/[0.58] font-bold text-white" :to="{ name: 'bills' }">
+            查看帐单
+          </RouterLink>
         </div>
       </section>
 
-      <section class="recharge-section" aria-label="充值金额">
-        <div class="section-heading">
-          <h2>充值金额</h2>
-          <span>最低 ¥{{ MIN_RECHARGE_AMOUNT }}</span>
+      <section class="mt-[18px]" aria-label="充值金额">
+        <div class="flex items-end justify-between gap-3 px-0.5 pb-3">
+          <h2 class="m-0 text-lg leading-[26px] font-extrabold text-[#17201c]">充值金额</h2>
+          <span class="text-xs leading-5 text-[#78847d]">最低 ¥{{ MIN_RECHARGE_AMOUNT }}</span>
         </div>
 
-        <div class="amount-grid">
-          <button
-            v-for="amount in presetAmounts"
-            :key="amount"
-            class="amount-option"
-            :class="{ 'amount-option--active': isAmountSelected(amount) }"
-            type="button"
-            @click="selectAmount(amount)"
-          >
-            <span class="amount-option__value">¥{{ amount }}</span>
-            <span class="amount-option__caption">立即到账</span>
+        <div class="grid grid-cols-3 gap-2.5 max-[360px]:gap-2">
+          <button v-for="amount in presetAmounts" :key="amount"
+            class="grid min-h-[78px] content-center gap-[5px] rounded-xl border text-[#17201c] max-[360px]:min-h-[72px]"
+            :class="isAmountSelected(amount)
+              ? 'border-[rgba(27,107,82,0.72)] bg-[#eef8f3] shadow-[0_10px_28px_rgba(27,107,82,0.12)]'
+              : 'border-[rgba(23,32,28,0.08)] bg-white/[0.92] shadow-[0_8px_24px_rgba(23,32,28,0.06)]'
+              " type="button" @click="selectAmount(amount)">
+            <span class="text-[19px] leading-6 font-extrabold">¥{{ amount }}</span>
+            <span class="text-[11px] leading-4 text-[#78847d]">立即到账</span>
           </button>
         </div>
 
-        <button class="amount-display" type="button" @click="keyboardVisible = true">
-          <span class="amount-display__label">自定义金额</span>
-          <span class="amount-display__value">¥{{ amountText }}</span>
+        <button
+          class="mt-3 flex min-h-[74px] w-full items-center justify-between gap-3 rounded-[14px] border border-[rgba(27,107,82,0.18)] bg-white px-4 text-left shadow-[0_10px_30px_rgba(23,32,28,0.06)]"
+          type="button" @click="keyboardVisible = true">
+          <span class="text-sm font-bold text-[#5e6a64]">自定义金额</span>
+          <span
+            class="[font-family:MiSans,'DIN_Alternate','Arial_Narrow',sans-serif] text-[clamp(24px,8vw,34px)] leading-none font-black text-[#1b6b52]">
+            ¥{{ amountText }}
+          </span>
         </button>
       </section>
 
-      <VanButton
-        block
-        type="primary"
-        class="recharge-submit"
-        :loading="submitting"
-        :disabled="!canSubmit"
-        @click="handleRecharge"
-      >
+      <VanButton block type="primary"
+        class="mt-[22px] text-base font-extrabold [--van-button-default-height:52px] [--van-button-primary-background:#17201c] [--van-button-primary-border-color:#17201c] [--van-button-radius:14px]"
+        :loading="submitting" :disabled="!canSubmit" @click="handleRecharge">
         立即充值
       </VanButton>
     </main>
 
-    <VanNumberKeyboard
-      v-model="amountValue"
-      :show="keyboardVisible"
-      theme="custom"
-      extra-key="."
-      close-button-text="完成"
-      :maxlength="9"
-      safe-area-inset-bottom
-      @blur="keyboardVisible = false"
-    />
+    <VanNumberKeyboard v-model="amountValue" :show="keyboardVisible" theme="custom" extra-key="." close-button-text="完成"
+      :maxlength="9" safe-area-inset-bottom @blur="keyboardVisible = false" />
   </section>
 </template>
-
-<style scoped>
-.recharge-page {
-  min-height: 100vh;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(246, 249, 247, 0.92) 34%, #eef3ef 100%),
-    repeating-linear-gradient(135deg, rgba(27, 107, 82, 0.05) 0 1px, transparent 1px 12px);
-  color: #17201c;
-}
-
-.recharge-navbar {
-  --van-nav-bar-background: rgba(255, 255, 255, 0.86);
-  --van-nav-bar-title-text-color: #17201c;
-  --van-nav-bar-title-font-size: 17px;
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(27, 107, 82, 0.08);
-}
-
-.recharge-content {
-  width: min(100%, 520px);
-  margin: 0 auto;
-  padding: 18px 16px 24px;
-}
-
-.balance-panel {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(27, 107, 82, 0.16);
-  border-radius: 18px;
-  background:
-    linear-gradient(142deg, rgba(27, 107, 82, 0.96), rgba(30, 71, 61, 0.96) 58%, rgba(211, 160, 76, 0.94)),
-    #1b6b52;
-  padding: 18px;
-  box-shadow: 0 18px 44px rgba(24, 72, 55, 0.18);
-  color: #fff;
-}
-
-.balance-panel::after {
-  position: absolute;
-  right: -58px;
-  bottom: -72px;
-  width: 180px;
-  height: 180px;
-  border: 1px solid rgba(255, 255, 255, 0.26);
-  border-radius: 50%;
-  content: '';
-}
-
-.balance-panel__top,
-.balance-panel__bottom {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.balance-panel__label,
-.balance-panel__bottom {
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 13px;
-  line-height: 20px;
-}
-
-.balance-panel__refresh {
-  display: inline-grid;
-  min-width: 72px;
-  height: 30px;
-  place-items: center;
-  border: 0;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.88);
-  color: #1b6b52;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.balance-panel__refresh:disabled {
-  opacity: 0.72;
-}
-
-.balance-panel__amount {
-  position: relative;
-  z-index: 1;
-  margin: 18px 0 22px;
-  font-family: MiSans, 'DIN Alternate', 'Arial Narrow', sans-serif;
-  font-size: clamp(38px, 13vw, 56px);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0;
-}
-
-.balance-panel__link {
-  flex: 0 0 auto;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.58);
-  color: #fff;
-  font-weight: 700;
-}
-
-.recharge-section {
-  margin-top: 18px;
-}
-
-.section-heading {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 0 2px 12px;
-}
-
-.section-heading h2 {
-  margin: 0;
-  color: #17201c;
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 26px;
-}
-
-.section-heading span {
-  color: #78847d;
-  font-size: 12px;
-  line-height: 20px;
-}
-
-.amount-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.amount-option {
-  display: grid;
-  min-height: 78px;
-  align-content: center;
-  gap: 5px;
-  border: 1px solid rgba(23, 32, 28, 0.08);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.92);
-  color: #17201c;
-  box-shadow: 0 8px 24px rgba(23, 32, 28, 0.06);
-}
-
-.amount-option--active {
-  border-color: rgba(27, 107, 82, 0.72);
-  background: #eef8f3;
-  box-shadow: 0 10px 28px rgba(27, 107, 82, 0.12);
-}
-
-.amount-option__value {
-  font-size: 19px;
-  font-weight: 800;
-  line-height: 24px;
-}
-
-.amount-option__caption {
-  color: #78847d;
-  font-size: 11px;
-  line-height: 16px;
-}
-
-.amount-display {
-  display: flex;
-  width: 100%;
-  min-height: 74px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 12px;
-  border: 1px solid rgba(27, 107, 82, 0.18);
-  border-radius: 14px;
-  background: #fff;
-  padding: 0 16px;
-  box-shadow: 0 10px 30px rgba(23, 32, 28, 0.06);
-  text-align: left;
-}
-
-.amount-display__label {
-  color: #5e6a64;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.amount-display__value {
-  color: #1b6b52;
-  font-family: MiSans, 'DIN Alternate', 'Arial Narrow', sans-serif;
-  font-size: clamp(24px, 8vw, 34px);
-  font-weight: 900;
-  letter-spacing: 0;
-  line-height: 1;
-}
-
-.recharge-submit {
-  --van-button-primary-background: #17201c;
-  --van-button-primary-border-color: #17201c;
-  --van-button-default-height: 52px;
-  --van-button-radius: 14px;
-  margin-top: 22px;
-  font-size: 16px;
-  font-weight: 800;
-}
-
-@media (max-width: 360px) {
-  .recharge-content {
-    padding-inline: 12px;
-  }
-
-  .amount-grid {
-    gap: 8px;
-  }
-
-  .amount-option {
-    min-height: 72px;
-  }
-}
-</style>

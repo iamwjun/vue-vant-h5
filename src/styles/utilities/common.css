@@ -6,3 +6,15 @@
     display: none;
   }
 }
+
+@utility recharge-page-surface {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(246, 249, 247, 0.92) 34%, #eef3ef 100%),
+    repeating-linear-gradient(135deg, rgba(27, 107, 82, 0.05) 0 1px, transparent 1px 12px);
+}
+
+@utility recharge-balance-surface {
+  background:
+    linear-gradient(142deg, rgba(27, 107, 82, 0.96), rgba(30, 71, 61, 0.96) 58%, rgba(211, 160, 76, 0.94)),
+    #1b6b52;
+}

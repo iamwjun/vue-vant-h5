@@ -118,7 +118,6 @@ async function loadBills() {
       title="帐单"
       left-arrow
       fixed
-      placeholder
       safe-area-inset-top
       class="bills-navbar"
       @click-left="router.back()"
@@ -204,6 +203,7 @@ async function loadBills() {
   --van-nav-bar-icon-color: #17201c;
   --van-nav-bar-title-text-color: #17201c;
   --van-nav-bar-title-font-size: 17px;
+  --van-nav-bar-z-index: 10;
   backdrop-filter: blur(18px);
   border-bottom: 1px solid rgba(23, 32, 28, 0.08);
 }
@@ -212,6 +212,7 @@ async function loadBills() {
   width: min(100%, 520px);
   margin: 0 auto;
   padding: 14px 14px 28px;
+  padding-top: calc(var(--van-nav-bar-height) + 14px + env(safe-area-inset-top));
 }
 
 .bills-overview {
@@ -276,7 +277,7 @@ async function loadBills() {
 
 .month-header {
   position: sticky;
-  top: var(--van-nav-bar-height);
+  top: calc(var(--van-nav-bar-height) + env(safe-area-inset-top));
   z-index: 2;
   display: flex;
   align-items: center;
